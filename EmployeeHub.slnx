@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="EmployeeHub.Api/EmployeeHub.Api.csproj" />
+  <Project Path="EmployeeHub.PasswordGenerator/EmployeeHub.PasswordGenerator.csproj" Id="cd9cd144-4961-4144-b223-f2ff6ef99f38" />
+</Solution>
