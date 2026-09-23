@@ -8,8 +8,28 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Scalar.AspNetCore;
 using System.Text;
+using Serilog;
+using EmployeeHub.Api.Middleware;
+using EmployeeHub.Api.Services.Caching;
 
 var builder = WebApplication.CreateBuilder(args);
+
+Log.Logger = new LoggerConfiguration()
+    .ReadFrom.Configuration(builder.Configuration)
+    .Enrich.FromLogContext()
+    .WriteTo.Console(
+        outputTemplate:
+            "{Timestamp:HH:mm:ss.fff} [{Level:u3}] " +
+            "[RequestId: {RequestId}] [Username: {Username}] {Message:lj}{NewLine}{Exception}")
+    .WriteTo.File(
+        "logs/EmployeeHub-.txt",
+        rollingInterval: RollingInterval.Day,
+        outputTemplate:
+            "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] " +
+            "[RequestId: {RequestId}] [Username: {Username}] {Message:lj}{NewLine}{Exception}")
+    .CreateLogger();
+
+builder.Host.UseSerilog();
 
 // Add services to the container.
 builder.Services.AddDbContext<AppDbContext>(options =>
@@ -83,6 +103,13 @@ builder.Services.AddOpenApi(options =>
     });
 });
 
+builder.Services.AddStackExchangeRedisCache(options =>
+{
+    options.Configuration = builder.Configuration["Redis:ConnectionString"];
+});
+
+builder.Services.AddScoped<ICacheService, RedisCacheService>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -95,6 +122,10 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthentication();
+
+app.UseMiddleware<RequestLoggingMiddleware>();
+app.UseMiddleware<ExceptionHandlingMiddleware>();
+
 app.UseAuthorization();
 
 app.MapControllers();

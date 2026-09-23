@@ -1,6 +1,10 @@
 ﻿using EmployeeHub.Api.DTOs;
 using EmployeeHub.Api.Models;
 using EmployeeHub.Api.Repository;
+using EmployeeHub.Api.Services.Caching;
+
+//using Microsoft.Extensions.Caching.Distributed;
+//using System.Text.Json;
 
 namespace EmployeeHub.Api.Services;
 
@@ -8,17 +12,40 @@ public class EmployeeService : IEmployeeService
 {
     private readonly IEmployeeRepository _repository;
     private readonly ILogger<EmployeeService> _logger;
+    private readonly ICacheService _cache;
 
-    public EmployeeService(IEmployeeRepository repository, ILogger<EmployeeService> logger)
+    private const string EmployeesCacheKey = "employees:all";
+
+    public EmployeeService(IEmployeeRepository repository, ILogger<EmployeeService> logger, ICacheService cache)
     {
         _repository = repository;
         _logger = logger;
+        _cache = cache;
     }
 
     public async Task<IEnumerable<EmployeeDto>> GetAllAsync()
     {
+       // I don't want my business service tightly coupled to Redis.
+       // I created an ICacheService abstraction.
+       // The employee service depends on that abstraction,
+       // while RedisCacheService handles the Redis implementation and serialization details.
+        var cachedEmployees =
+        await _cache.GetAsync<List<EmployeeDto>>(EmployeesCacheKey);
+
+        if (cachedEmployees is not null)
+        {
+            _logger.LogInformation(
+                "Employee list retrieved from cache");
+
+            return cachedEmployees;
+        }
+
+        _logger.LogInformation(
+            "Employee list not found in cache. Retrieving from database");
+
+
         var employees = await _repository.GetAllEmployeesAsync();
-        return employees.Select(e => new EmployeeDto
+        var employeeDtos = employees.Select(e => new EmployeeDto
         {
             Id = e.Id,
             FirstName = e.FirstName,
@@ -27,7 +54,17 @@ public class EmployeeService : IEmployeeService
             Department = e.Department,
             Salary = e.Salary,
             CreatedDate = e.CreatedDate
-        });
+        }).ToList();
+
+        await _cache.SetAsync(
+        EmployeesCacheKey,
+        employeeDtos,
+        TimeSpan.FromMinutes(5));
+
+        _logger.LogInformation(
+            "Employee list stored in cache");
+
+        return employeeDtos;    
     }
 
     public async Task<EmployeeDto?> GetByIdAsync(int id)
@@ -73,6 +110,10 @@ public class EmployeeService : IEmployeeService
         };
 
         var createdEmployee = await _repository.AddEmployeeAsync(employee);
+
+        await _cache.RemoveAsync(EmployeesCacheKey);
+        _logger.LogInformation("Employee list cache invalidated after creating a new employee {EmployeeId}", createdEmployee.Id);
+
         return new EmployeeDto
         {
             Id = createdEmployee.Id,
@@ -87,9 +128,13 @@ public class EmployeeService : IEmployeeService
 
     public async Task<bool> UpdateAsync(int id, UpdateEmployeeDto employee)
     {
+        _logger.LogInformation("Updating employee with ID {EmployeeId}", id);
+
         var existingEmployee = await _repository.GetEmployeeByIdAsync(id);
         if (existingEmployee == null)
         {
+            _logger.LogWarning("Employee with ID {EmployeeId} not found", id);
+
             return false;
         }
 
@@ -101,18 +146,29 @@ public class EmployeeService : IEmployeeService
         existingEmployee.Salary = employee.Salary;
 
         await _repository.UpdateEmployeeAsync(existingEmployee);
+
+        await _cache.RemoveAsync(EmployeesCacheKey);
+        _logger.LogInformation("Employee list cache invalidated after updating employee {EmployeeId}", id);
+
         return true;
     }
 
     public async Task<bool> DeleteAsync(int id)
     {
+        _logger.LogInformation("Deleting employee with ID {EmployeeId}", id);
+
         var employee = await _repository.GetEmployeeByIdAsync(id);
         if (employee == null)
         {
+            _logger.LogWarning("Employee with ID {EmployeeId} not found", id);
             return false;
         }
 
         await _repository.DeleteEmployeeAsync(id);
+
+        await _cache.RemoveAsync(EmployeesCacheKey);
+        _logger.LogInformation("Employee list cache invalidated after deleting employee {EmployeeId}", id);
+
         return true;
     }
 }

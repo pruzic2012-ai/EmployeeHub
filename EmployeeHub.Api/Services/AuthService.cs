@@ -14,15 +14,23 @@ public class AuthService : IAuthService
     private readonly IUserRepository _userRepository;
     private readonly IPasswordHasher<User> _passwordHasher;
     private readonly IConfiguration _configuration;
+    /*
+     * I use structured logging for authentication events, 
+     * but I make sure not to log sensitive information such as passwords, password hashes, or JWT tokens.
+     * 
+     */
+    private readonly ILogger<AuthService> _logger;
 
     public AuthService(
         IUserRepository userRepository,
         IPasswordHasher<User> passwordHasher,
-        IConfiguration configuration)
+        IConfiguration configuration,
+        ILogger<AuthService> logger)
     {
         _userRepository = userRepository;
         _passwordHasher = passwordHasher;
         _configuration = configuration;
+        _logger = logger;
     }
     public async Task<LoginResponse> LoginAsync(LoginRequest request)
     {
@@ -31,6 +39,7 @@ public class AuthService : IAuthService
 
         if (user is null)
         {
+            _logger.LogWarning("Login attempt failed for username: {Username}", request.Username);
             return new LoginResponse
             {
                 Success = false,
@@ -45,6 +54,7 @@ public class AuthService : IAuthService
 
         if (result == PasswordVerificationResult.Failed)
         {
+            _logger.LogWarning("Login attempt failed for username: {Username}", request.Username);
             return new LoginResponse
             {
                 Success = false,
@@ -79,6 +89,8 @@ public class AuthService : IAuthService
 
         var tokenString = new JwtSecurityTokenHandler()
             .WriteToken(token);
+
+        _logger.LogInformation("User {Username} logged in successfully with role: {Role}", user.Username, user.Role?.Name);
 
         return new LoginResponse
         {

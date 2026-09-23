@@ -1,4 +1,6 @@
-﻿namespace EmployeeHub.Api.Models;
+﻿
+
+namespace EmployeeHub.Api.Models;
 
 public class Employee
 {
