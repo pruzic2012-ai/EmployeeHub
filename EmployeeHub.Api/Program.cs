@@ -1,16 +1,18 @@
 using EmployeeHub.Api.Data;
+using EmployeeHub.Api.Middleware;
 using EmployeeHub.Api.Models;
-using EmployeeHub.Api.Repository;
+using EmployeeHub.Api.Repositories;
 using EmployeeHub.Api.Services;
+using EmployeeHub.Api.Services.Caching;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Scalar.AspNetCore;
-using System.Text;
 using Serilog;
-using EmployeeHub.Api.Middleware;
-using EmployeeHub.Api.Services.Caching;
+using System.Text;
+using Asp.Versioning;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -69,16 +71,35 @@ builder.Services
         };
     });
 
-        //builder.Services.AddAuthorization();
-        builder.Services.AddAuthorization(options =>
-        {
-            options.AddPolicy("AdminOnly", policy =>
-            {
-                policy.RequireRole("Admin");
-            });
-        });
+//builder.Services.AddAuthorization();
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("AdminOnly", policy =>
+    {
+        policy.RequireRole("Admin");
+    });
+});
 
 builder.Services.AddControllers();
+/*
+ * I use URL-based API versioning so I can evolve the API without breaking existing clients. 
+ * The current employee API is version 1.0, exposed as /api/v1/.... 
+ * API Explorer and Scalar are configured to understand the versioned routes."
+ * 
+ */
+builder.Services.AddApiVersioning(options =>
+{
+    options.DefaultApiVersion = new ApiVersion(1, 0);
+    options.AssumeDefaultVersionWhenUnspecified = true;
+    options.ReportApiVersions = true;
+})
+    .AddMvc()
+    .AddApiExplorer(options =>
+    {
+        options.GroupNameFormat = "'v'VVV";
+        options.SubstituteApiVersionInUrl = true;
+    });
+
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 //builder.Services.AddOpenApi();
 builder.Services.AddOpenApi(options =>
@@ -110,6 +131,26 @@ builder.Services.AddStackExchangeRedisCache(options =>
 
 builder.Services.AddScoped<ICacheService, RedisCacheService>();
 
+builder.Services.Configure<ApiBehaviorOptions>(options =>
+{
+    options.InvalidModelStateResponseFactory = context =>
+    {
+        var errors = context.ModelState
+            .Where(x => x.Value?.Errors.Count > 0)
+            .ToDictionary(
+                x => x.Key,
+                x => x.Value!.Errors
+                    .Select(e => e.ErrorMessage)
+                    .ToArray());
+
+        return new BadRequestObjectResult(new
+        {
+            message = "Validation failed.",
+            errors
+        });
+    };
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -121,10 +162,15 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+/*
+ *I put global exception handling early in the middleware pipeline so exceptions from authentication, 
+ *logging, authorization, controllers, or downstream services can be handled consistently. 
+ **/
+app.UseMiddleware<ExceptionHandlingMiddleware>();
+
 app.UseAuthentication();
 
 app.UseMiddleware<RequestLoggingMiddleware>();
-app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 app.UseAuthorization();
 

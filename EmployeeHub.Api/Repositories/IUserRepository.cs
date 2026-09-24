@@ -1,6 +1,6 @@
 ﻿using EmployeeHub.Api.Models;
 
-namespace EmployeeHub.Api.Repository;
+namespace EmployeeHub.Api.Repositories;
 
 public interface IUserRepository
 {

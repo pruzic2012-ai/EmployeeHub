@@ -3,7 +3,7 @@ using EmployeeHub.Api.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Client;
 
-namespace EmployeeHub.Api.Repository
+namespace EmployeeHub.Api.Repositories
 {
     public class UserRepository : IUserRepository
     {

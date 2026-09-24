@@ -1,6 +1,6 @@
 ﻿using EmployeeHub.Api.DTOs;
 using EmployeeHub.Api.Models;
-using EmployeeHub.Api.Repository;
+using EmployeeHub.Api.Repositories;
 using Microsoft.AspNetCore.Identity;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;

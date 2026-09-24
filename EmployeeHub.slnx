@@ -1,4 +1,5 @@
 <Solution>
+  <Project Path="EmployeeHub.Api.Tests/EmployeeHub.Api.Tests.csproj" Id="c0a46159-94af-42ee-bb56-d57afa16ef50" />
   <Project Path="EmployeeHub.Api/EmployeeHub.Api.csproj" />
   <Project Path="EmployeeHub.PasswordGenerator/EmployeeHub.PasswordGenerator.csproj" Id="cd9cd144-4961-4144-b223-f2ff6ef99f38" />
 </Solution>

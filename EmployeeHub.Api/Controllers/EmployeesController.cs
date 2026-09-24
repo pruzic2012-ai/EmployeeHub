@@ -1,10 +1,11 @@
 ﻿using EmployeeHub.Api.Data;
 using EmployeeHub.Api.DTOs;
-using EmployeeHub.Api.Repository;
+using EmployeeHub.Api.Repositories;
 using EmployeeHub.Api.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
+using Asp.Versioning;
 
 namespace EmployeeHub.Api.Controllers;
 /*
@@ -14,8 +15,10 @@ namespace EmployeeHub.Api.Controllers;
  * A normal authenticated user can access GET operations, but when they try to perform an administrative operation, authorization evaluates the AdminOnly policy and returns 403 because the user doesn't have the Admin role.
  * 
  */
+
 [ApiController]
-[Route("api/[controller]")]
+[ApiVersion(1.0)]
+[Route("api/v{version:apiVersion}/[controller]")]
 [Authorize]
 public class EmployeesController : ControllerBase
 {

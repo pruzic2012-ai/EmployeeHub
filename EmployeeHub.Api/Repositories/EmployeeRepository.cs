@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Client;
 
 
-namespace EmployeeHub.Api.Repository;
+namespace EmployeeHub.Api.Repositories;
 
 public class EmployeeRepository : IEmployeeRepository
 {

@@ -1,6 +1,6 @@
 ﻿using EmployeeHub.Api.DTOs;
 using EmployeeHub.Api.Models;
-using EmployeeHub.Api.Repository;
+using EmployeeHub.Api.Repositories;
 using EmployeeHub.Api.Services.Caching;
 
 //using Microsoft.Extensions.Caching.Distributed;
