@@ -1,12 +1,13 @@
-﻿using EmployeeHub.Api.Models;
+﻿
+using EmployeeHub.Domain.Entities;
+using EmployeeHub.Application.Repositories;
 
-
-using EmployeeHub.Api.Data;
+using EmployeeHub.Application.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Client;
 
 
-namespace EmployeeHub.Api.Repositories;
+namespace EmployeeHub.Infrastracture.Repositories;
 
 public class EmployeeRepository : IEmployeeRepository
 {

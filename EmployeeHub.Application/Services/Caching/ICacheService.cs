@@ -1,4 +1,4 @@
-﻿namespace EmployeeHub.Api.Services.Caching
+﻿namespace EmployeeHub.Application.Services.Caching
 {
     public interface ICacheService
     {

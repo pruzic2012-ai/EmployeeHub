@@ -18,6 +18,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\EmployeeHub.Api\EmployeeHub.Api.csproj" />
+    <ProjectReference Include="..\EmployeeHub.Application\EmployeeHub.Application.csproj" />
+    <ProjectReference Include="..\EmployeeHub.Domain\EmployeeHub.Domain.csproj" />
   </ItemGroup>
 
   <ItemGroup>

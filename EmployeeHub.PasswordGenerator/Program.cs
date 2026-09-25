@@ -1,5 +1,6 @@
 ﻿
-using EmployeeHub.Api.Models;
+using EmployeeHub.Domain.Entities;
+
 using Microsoft.AspNetCore.Identity;
 
 var user = new User

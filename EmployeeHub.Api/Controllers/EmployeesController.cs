@@ -1,5 +1,6 @@
-﻿using EmployeeHub.Api.Data;
-using EmployeeHub.Api.DTOs;
+﻿using EmployeeHub.Application.Data;
+using EmployeeHub.Application.DTOs;
+using EmployeeHub.Application.Services;
 using EmployeeHub.Api.Repositories;
 using EmployeeHub.Api.Services;
 using Microsoft.AspNetCore.Mvc;

@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using EmployeeHub.Api.Services;
-using EmployeeHub.Api.DTOs;
+using EmployeeHub.Application.Services;
+using EmployeeHub.Application.DTOs;
 
 namespace EmployeeHub.Api.Controllers;
 

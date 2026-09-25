@@ -1,5 +1,6 @@
 ﻿using System.Text.Json;
 using Microsoft.Extensions.Caching.Distributed;
+using EmployeeHub.Application.Services.Caching;
 
 namespace EmployeeHub.Api.Services.Caching;
 

@@ -1,6 +1,6 @@
-﻿using EmployeeHub.Api.DTOs;
+﻿using EmployeeHub.Application.DTOs;
 
-namespace EmployeeHub.Api.Services;
+namespace EmployeeHub.Application.Services;
 
 public interface IAuthService
 {

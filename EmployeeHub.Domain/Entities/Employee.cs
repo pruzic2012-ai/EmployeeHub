@@ -1,6 +1,6 @@
 ﻿
 
-namespace EmployeeHub.Api.Models;
+namespace EmployeeHub.Domain.Entities;
 
 public class Employee
 {

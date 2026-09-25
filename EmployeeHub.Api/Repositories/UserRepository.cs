@@ -1,5 +1,6 @@
-﻿using EmployeeHub.Api.Data;
-using EmployeeHub.Api.Models;
+﻿using EmployeeHub.Application.Data;
+using EmployeeHub.Domain.Entities;
+using EmployeeHub.Application.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Client;
 

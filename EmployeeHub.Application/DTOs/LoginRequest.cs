@@ -1,4 +1,4 @@
-﻿namespace EmployeeHub.Api.DTOs;
+﻿namespace EmployeeHub.Application.DTOs;
 
 public class LoginRequest
 {

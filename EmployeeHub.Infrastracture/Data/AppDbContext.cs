@@ -1,8 +1,9 @@
 ﻿
-using EmployeeHub.Api.Models;
-using Microsoft.EntityFrameworkCore;
 
-namespace EmployeeHub.Api.Data;
+using Microsoft.EntityFrameworkCore;
+using EmployeeHub.Domain.Entities;
+
+namespace EmployeeHub.Application.Data;
 
 public class AppDbContext : DbContext
 {

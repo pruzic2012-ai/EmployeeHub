@@ -1,7 +1,7 @@
 ﻿
-using EmployeeHub.Api.Models;
+using EmployeeHub.Domain.Entities;
 
-namespace EmployeeHub.Api.Repositories;
+namespace EmployeeHub.Application.Repositories;
 
 public interface IEmployeeRepository
 {

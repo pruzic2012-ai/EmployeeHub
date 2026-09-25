@@ -1,13 +1,17 @@
-﻿using EmployeeHub.Api.DTOs;
-using EmployeeHub.Api.Models;
-using EmployeeHub.Api.Repositories;
+﻿using EmployeeHub.Application.DTOs;
+using EmployeeHub.Domain.Entities;
+using EmployeeHub.Application.Repositories;
 using Microsoft.AspNetCore.Identity;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 
-namespace EmployeeHub.Api.Services;
+
+
+namespace EmployeeHub.Application.Services;
 
 public class AuthService : IAuthService
 {

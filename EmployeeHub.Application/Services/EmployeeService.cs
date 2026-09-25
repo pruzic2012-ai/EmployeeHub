@@ -1,12 +1,15 @@
-﻿using EmployeeHub.Api.DTOs;
-using EmployeeHub.Api.Models;
-using EmployeeHub.Api.Repositories;
-using EmployeeHub.Api.Services.Caching;
+﻿
+
+using EmployeeHub.Application.DTOs;
+using EmployeeHub.Domain.Entities;
+using EmployeeHub.Application.Repositories;
+using EmployeeHub.Application.Services.Caching;
+using Microsoft.Extensions.Logging;
 
 //using Microsoft.Extensions.Caching.Distributed;
 //using System.Text.Json;
 
-namespace EmployeeHub.Api.Services;
+namespace EmployeeHub.Application.Services;
 
 public class EmployeeService : IEmployeeService
 {

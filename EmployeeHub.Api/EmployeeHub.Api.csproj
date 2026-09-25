@@ -27,4 +27,15 @@
     <PackageReference Include="Serilog.Sinks.File" Version="7.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\EmployeeHub.Application\EmployeeHub.Application.csproj" />
+    <ProjectReference Include="..\EmployeeHub.Domain\EmployeeHub.Domain.csproj" />
+    <ProjectReference Include="..\EmployeeHub.Infrastracture\EmployeeHub.Infrastracture.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Data\" />
+    <Folder Include="Models\" />
+  </ItemGroup>
+
 </Project>

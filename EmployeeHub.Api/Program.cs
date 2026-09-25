@@ -1,8 +1,11 @@
-using EmployeeHub.Api.Data;
+using EmployeeHub.Application.Data;
 using EmployeeHub.Api.Middleware;
-using EmployeeHub.Api.Models;
+using EmployeeHub.Domain.Entities;
+using EmployeeHub.Application.Repositories;
 using EmployeeHub.Api.Repositories;
+using EmployeeHub.Infrastracture.Repositories;
 using EmployeeHub.Api.Services;
+using EmployeeHub.Application.Services;
 using EmployeeHub.Api.Services.Caching;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -13,6 +16,7 @@ using Scalar.AspNetCore;
 using Serilog;
 using System.Text;
 using Asp.Versioning;
+using EmployeeHub.Application.Services.Caching;
 
 var builder = WebApplication.CreateBuilder(args);
 

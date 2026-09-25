@@ -1,8 +1,9 @@
-﻿using EmployeeHub.Api.DTOs;
-using EmployeeHub.Api.Models;
+﻿using EmployeeHub.Application.DTOs;
+using EmployeeHub.Domain.Entities;
 using EmployeeHub.Api.Repositories;
-using EmployeeHub.Api.Services;
-using EmployeeHub.Api.Services.Caching;
+using EmployeeHub.Application.Repositories;
+using EmployeeHub.Application.Services;
+using EmployeeHub.Application.Services.Caching;
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestPlatform.CommunicationUtilities;
 using Moq;
