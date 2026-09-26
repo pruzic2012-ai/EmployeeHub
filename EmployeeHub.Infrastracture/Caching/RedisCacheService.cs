@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Caching.Distributed;
 using EmployeeHub.Application.Services.Caching;
 
-namespace EmployeeHub.Api.Services.Caching;
+namespace EmployeeHub.Infrastracture.Caching;
 
 public class RedisCacheService : ICacheService
 {

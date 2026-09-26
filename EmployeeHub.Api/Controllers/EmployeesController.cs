@@ -1,10 +1,6 @@
-﻿using EmployeeHub.Application.Data;
-using EmployeeHub.Application.DTOs;
+﻿using EmployeeHub.Application.DTOs;
 using EmployeeHub.Application.Services;
-using EmployeeHub.Api.Repositories;
-using EmployeeHub.Api.Services;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
 using Asp.Versioning;
 
@@ -23,17 +19,17 @@ namespace EmployeeHub.Api.Controllers;
 [Authorize]
 public class EmployeesController : ControllerBase
 {
-    private readonly IEmployeeService _service;
+    private readonly IEmployeeService _employeeService;
 
-    public EmployeesController(IEmployeeService service)
+    public EmployeesController(IEmployeeService empService)
     {
-        _service = service;
+        _employeeService = empService ?? throw new ArgumentNullException(nameof(empService));
     }
 
     [HttpGet]
     public async Task<IActionResult> GetEmployees()
     {
-        var employees = await _service.GetAllAsync();
+        var employees = await _employeeService.GetAllAsync();
 
         return Ok(employees);
     }
@@ -41,7 +37,7 @@ public class EmployeesController : ControllerBase
     [HttpGet("{id:int}")]
     public async Task<IActionResult> GetEmployee(int id)
     {
-        var employee = await _service.GetByIdAsync(id);
+        var employee = await _employeeService.GetByIdAsync(id);
 
         if (employee is null)
             return NotFound();
@@ -54,7 +50,7 @@ public class EmployeesController : ControllerBase
     public async Task<IActionResult> CreateEmployee(
         CreateEmployeeDto dto)
     {
-        var employee = await _service.CreateAsync(dto);
+        var employee = await _employeeService.CreateAsync(dto);
 
         return CreatedAtAction(
             nameof(GetEmployee),
@@ -69,7 +65,7 @@ public class EmployeesController : ControllerBase
         int id,
         UpdateEmployeeDto dto)
     {
-        var updated = await _service.UpdateAsync(id, dto);
+        var updated = await _employeeService.UpdateAsync(id, dto);
 
         if (!updated)
             return NotFound();
@@ -81,7 +77,7 @@ public class EmployeesController : ControllerBase
     [Authorize(Policy = "AdminOnly")]
     public async Task<IActionResult> DeleteEmployee(int id)
     {
-        var deleted = await _service.DeleteAsync(id);
+        var deleted = await _employeeService.DeleteAsync(id);
 
         if (!deleted)
             return NotFound();

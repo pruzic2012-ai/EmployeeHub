@@ -4,7 +4,7 @@ using EmployeeHub.Application.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Client;
 
-namespace EmployeeHub.Api.Repositories
+namespace EmployeeHub.Infrastracture.Repositories
 {
     public class UserRepository : IUserRepository
     {

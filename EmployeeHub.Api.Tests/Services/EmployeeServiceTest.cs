@@ -1,6 +1,5 @@
 ﻿using EmployeeHub.Application.DTOs;
 using EmployeeHub.Domain.Entities;
-using EmployeeHub.Api.Repositories;
 using EmployeeHub.Application.Repositories;
 using EmployeeHub.Application.Services;
 using EmployeeHub.Application.Services.Caching;
