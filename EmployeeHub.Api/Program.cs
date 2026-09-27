@@ -83,6 +83,18 @@ builder.Services.AddAuthorization(options =>
 });
 
 builder.Services.AddControllers();
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AngularClient", policy =>
+    {
+        policy
+            .WithOrigins("http://localhost:4200")
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
+});
+
 /*
  * I use URL-based API versioning so I can evolve the API without breaking existing clients. 
  * The current employee API is version 1.0, exposed as /api/v1/.... 
@@ -169,6 +181,8 @@ app.UseHttpsRedirection();
  *logging, authorization, controllers, or downstream services can be handled consistently. 
  **/
 app.UseMiddleware<ExceptionHandlingMiddleware>();
+
+app.UseCors("AngularClient");
 
 app.UseAuthentication();
 

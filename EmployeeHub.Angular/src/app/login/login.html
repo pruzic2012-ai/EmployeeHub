@@ -1,0 +1,40 @@
+
+<div class="container mt-5" style="max-width: 450px;">
+
+  <div class="card shadow">
+    <div class="card-body">
+
+      <h2 class="card-title text-center mb-4">
+        EmployeeHub Login
+      </h2>
+
+      <div class="mb-3">
+        <label for="username" class="form-label">Username</label>
+        <input
+            id="username"
+            type="text"
+            class="form-control"
+            placeholder="Enter username"
+            [(ngModel)]="username">
+      </div>
+
+      <div class="mb-3">
+        <label for="password" class="form-label">Password</label>
+        <input
+            id="password"
+            type="password"
+            class="form-control"
+            placeholder="Enter password"
+            [(ngModel)]="password">
+      </div>
+
+      <button
+        class="btn btn-primary w-100"
+        (click)="login()">
+        Login
+      </button>
+
+    </div>
+  </div>
+
+</div>
