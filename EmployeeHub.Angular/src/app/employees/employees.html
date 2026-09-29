@@ -3,7 +3,7 @@
   <div class="d-flex justify-content-between align-items-center mb-3">
     <h2>Employees</h2>
 
-    <button class="btn btn-primary">
+    <button routerLink="/add-employee" class="btn btn-primary">
       Add Employee
     </button>
   </div>
@@ -11,7 +11,7 @@
   <div class="card">
     <div class="card-body">
      
-      @if (loading) {
+      @if (loading()) {
       <div class="text-center py-4">
         <div class="spinner-border text-primary" role="status">
           <span class="visually-hidden">Loading...</span>
@@ -21,9 +21,9 @@
       </div>
     }
 
-    @if (errorMessage) {
+    @if (errorMessage()) {
       <div class="alert alert-danger" role="alert">
-        {{ errorMessage }}
+        {{ errorMessage()}}
       </div>
     }
 
