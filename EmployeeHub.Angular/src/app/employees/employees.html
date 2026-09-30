@@ -50,7 +50,7 @@
               <td>{{ employee.department }}</td>
               <td>{{ employee.salary | currency }}</td>
               <td>
-                <button class="btn btn-sm btn-outline-primary me-2">
+                <button class="btn btn-sm btn-outline-primary me-2" [routerLink]="['/edit-employee', employee.id]">
                   Edit
                 </button>
 

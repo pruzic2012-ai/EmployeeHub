@@ -25,6 +25,15 @@ export class EmployeeService {
     return this.http.get<any[]>(this.apiUrl);
   }
 
+  getEmployeeById(id: number): Observable<any> {
+    const url = `${this.apiUrl}/${id}`;
+    return this.http.get<any>(url);
+  }
+  
+updateEmployee(id: number, employee: any): Observable<any> {
+  const url = `${this.apiUrl}/${id}`;
+  return this.http.put<any>(url, employee);
+}
   createEmployee(employee: CreateEmployee): Observable<any> {
     return this.http.post<any>(this.apiUrl, employee);
   }
