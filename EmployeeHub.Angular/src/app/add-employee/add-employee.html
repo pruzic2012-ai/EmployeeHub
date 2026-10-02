@@ -15,6 +15,11 @@
                 {{ successMessage() }}
             </div>
         }
+        @if (errorMessage()) {
+          <div class="alert alert-danger" role="alert">
+            {{ errorMessage() }}
+          </div>
+        }
 
       <div class="row">
 
@@ -28,7 +33,13 @@
             type="text"
             class="form-control"
             placeholder="Enter first name"
-            [(ngModel)]="firstName">
+            [(ngModel)]="firstName"
+            >
+             @if (submitted && !firstName) {
+            <div class="text-danger mt-1">
+              First Name is required.
+            </div>
+          }
         </div>
 
         <div class="col-md-6 mb-3">
@@ -42,6 +53,14 @@
             class="form-control"
             placeholder="Enter last name"
             [(ngModel)]="lastName">
+
+            @if (submitted && !lastName) {
+          <div class="text-danger mt-1">
+            Last Name is required.
+          </div>
+        }
+
+
         </div>
 
         <div class="col-md-6 mb-3">
@@ -55,6 +74,17 @@
             class="form-control"
             placeholder="Enter email"
             [(ngModel)]="email">
+            @if (submitted && !email) {
+          <div class="text-danger mt-1">
+            Email is required.
+          </div>
+            }
+
+            @if (submitted && email && !isValidEmail()) {
+              <div class="text-danger mt-1">
+                Please enter a valid email address.
+              </div>
+            }
         </div>
 
         <div class="col-md-6 mb-3">
@@ -68,6 +98,11 @@
             class="form-control"
             placeholder="Enter department"
             [(ngModel)]="department">
+             @if (submitted && !department) {
+              <div class="text-danger mt-1">
+                Department is required.
+              </div>
+            }
         </div>
 
         <div class="col-md-6 mb-3">
@@ -81,6 +116,17 @@
             class="form-control"
             placeholder="Enter salary"
             [(ngModel)]="salary">
+            @if (submitted && (salary === null || salary === undefined)) {
+            <div class="text-danger mt-1">
+              Salary is required.
+            </div>
+          }
+
+          @if (submitted && salary !== null && salary < 30000) {
+            <div class="text-danger mt-1">
+              Salary must be at least $30,000.
+            </div>
+          }
         </div>
 
       </div>

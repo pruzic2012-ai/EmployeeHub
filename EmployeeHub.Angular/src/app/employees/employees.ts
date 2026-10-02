@@ -1,4 +1,4 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, OnInit, signal, ChangeDetectorRef } from '@angular/core';
 import {CurrencyPipe} from "@angular/common";
 import { EmployeeService } from '../service/employee.service';
 import { RouterLink } from '@angular/router';
@@ -16,7 +16,7 @@ export class Employees implements OnInit {
   loading = signal(false);
   errorMessage = signal('');
 
-  constructor(private employeeService: EmployeeService) {}
+  constructor(private employeeService: EmployeeService, private cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void {
 
@@ -41,4 +41,30 @@ export class Employees implements OnInit {
 
     });
   }
+
+  deleteEmployee(id: number): void {
+
+    const confirmed = window.confirm(
+    'Are you sure you want to delete this employee?'
+  );
+
+  if (!confirmed) {
+    return;
+  }
+
+  this.employeeService.deleteEmployee(id).subscribe({
+    next: () => {
+      console.log('Employee deleted successfully:', id);
+
+      this.employees = this.employees.filter(
+        employee => employee.id !== id
+      );
+
+      this.cdr.detectChanges();
+    },
+    error: (error) => {
+      console.error('Error deleting employee:', error);
+    }
+  });
+}
 }

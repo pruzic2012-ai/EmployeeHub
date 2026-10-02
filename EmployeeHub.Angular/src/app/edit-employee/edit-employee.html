@@ -11,8 +11,14 @@
     </a>
   </div>
 
+
   <div class="card">
     <div class="card-body">
+       @if (errorMessage()) {
+      <div class="alert alert-danger" role="alert">
+        {{ errorMessage() }}
+      </div>
+      }
 
       <div class="mb-3">
         <label class="form-label">First Name</label>
@@ -20,6 +26,11 @@
           type="text"
           class="form-control"
           [(ngModel)]="firstName">
+          @if (submitted && !firstName) {
+            <div class="text-danger mt-1">
+              First Name is required.
+            </div>
+          }
       </div>
 
       <div class="mb-3">
@@ -28,6 +39,12 @@
           type="text"
           class="form-control"
           [(ngModel)]="lastName">
+
+          @if (submitted && !lastName) {
+            <div class="text-danger mt-1">
+              Last Name is required.
+            </div>
+          }
       </div>
 
       <div class="mb-3">
@@ -36,6 +53,17 @@
           type="email"
           class="form-control"
           [(ngModel)]="email">
+           @if (submitted && !email) {
+            <div class="text-danger mt-1">
+              Email is required.
+            </div>
+          }
+
+          @if (submitted && email && !isValidEmail()) {
+            <div class="text-danger mt-1">
+              Please enter a valid email address.
+            </div>
+          }
       </div>
 
       <div class="mb-3">
@@ -44,6 +72,11 @@
           type="text"
           class="form-control"
           [(ngModel)]="department">
+          @if (submitted && !department) {
+          <div class="text-danger mt-1">
+            Department is required.
+          </div>
+  }
       </div>
 
       <div class="mb-3">
@@ -52,6 +85,17 @@
           type="number"
           class="form-control"
           [(ngModel)]="salary">
+          @if (submitted && (salary === null || salary === undefined)) {
+            <div class="text-danger mt-1">
+              Salary is required.
+            </div>
+          }
+
+          @if (submitted && salary !== null && salary < 30000) {
+            <div class="text-danger mt-1">
+              Salary must be at least $30,000.
+            </div>
+          }
       </div>
 
       <button

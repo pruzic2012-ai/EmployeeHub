@@ -16,12 +16,18 @@ export class AddEmployee {
   email: string = '';
   department: string = '';
   salary: number | null = null;
-
+  
+  submitted = false;
   successMessage = signal('');
+  errorMessage = signal('');
 
   constructor(private employeeService: EmployeeService, private router: Router) {}
 
   createEmployee(): void {
+
+    this.submitted = true;
+    this.successMessage.set('');
+    this.errorMessage.set('');
 
     if (this.firstName && this.lastName && this.email && this.department && this.salary !== null) {
       const newEmployee = {
@@ -50,11 +56,16 @@ export class AddEmployee {
         },
         error: (error) => {
           console.error('Error creating employee:', error);
+          this.errorMessage.set('Error creating employee. Please try again.');
         }
       });
     } else {
       console.error('Please fill in all required fields.');
+      return;
     }
   }
   
+  isValidEmail(): boolean {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.email);
+}
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink, ActivatedRoute } from '@angular/router';
 import { EmployeeService } from '../service/employee.service';
@@ -18,6 +18,9 @@ export class EditEmployee implements OnInit {
   email = '';
   department = '';
   salary: number | null = null;
+
+  errorMessage = signal('');
+  submitted = false;
   
   constructor(private route: ActivatedRoute, 
               private employeeService: EmployeeService,
@@ -50,6 +53,21 @@ export class EditEmployee implements OnInit {
 
   saveChanges(): void {
 
+    this.submitted = true;
+    this.errorMessage.set('');
+
+    if (
+    !this.firstName ||
+    !this.lastName ||
+    !this.email ||
+    !this.department ||
+    this.salary === null ||
+    this.salary < 30000 ||
+    !this.isValidEmail()
+  ) {
+    return;
+  }
+
   if (this.employeeId === null) {
     return;
   }
@@ -73,7 +91,11 @@ export class EditEmployee implements OnInit {
     },
     error: (error) => {
       console.error('Error updating employee:', error);
+      this.errorMessage.set('Failed to update employee. Please try again.');
     }
   });
+}
+isValidEmail(): boolean {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.email);
 }
 }
