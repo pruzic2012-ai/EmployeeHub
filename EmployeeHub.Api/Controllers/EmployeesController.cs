@@ -3,6 +3,7 @@ using EmployeeHub.Application.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using Asp.Versioning;
+using EmployeeHub.Application.Services.Idempotency;
 
 namespace EmployeeHub.Api.Controllers;
 /*
@@ -20,10 +21,12 @@ namespace EmployeeHub.Api.Controllers;
 public class EmployeesController : ControllerBase
 {
     private readonly IEmployeeService _employeeService;
+    private readonly IIdempotencyService _idempotencyService;
 
-    public EmployeesController(IEmployeeService empService)
+    public EmployeesController(IEmployeeService empService, IIdempotencyService idempotencyService)
     {
         _employeeService = empService ?? throw new ArgumentNullException(nameof(empService));
+        _idempotencyService = idempotencyService ?? throw new ArgumentNullException(nameof(idempotencyService));
     }
 
     [HttpGet]
@@ -48,14 +51,59 @@ public class EmployeesController : ControllerBase
     [HttpPost]
     [Authorize(Policy = "AdminOnly")]
     public async Task<IActionResult> CreateEmployee(
-        CreateEmployeeDto dto)
+        CreateEmployeeDto dto,
+        [FromHeader(Name ="Idempotency-Key")] string? idempotencyKey)
     {
-        var employee = await _employeeService.CreateAsync(dto);
+        if (string.IsNullOrWhiteSpace(idempotencyKey))
+        {
+            return BadRequest("Idempotency-Key header is required.");
+        }
 
-        return CreatedAtAction(
-            nameof(GetEmployee),
-            new { id = employee.Id },
-            employee);
+        // Check whether this request was already completed
+        var existingResult =
+            await _idempotencyService.GetResultAsync<EmployeeDto>(idempotencyKey);
+
+        if (existingResult is not null)
+        {
+            return CreatedAtAction(
+                nameof(GetEmployee),
+                new { id = existingResult.Id },
+                existingResult);
+        }
+
+        // Try to acquire the idempotency key
+        var acquired = await _idempotencyService.TryAcquireAsync(
+            idempotencyKey,
+            TimeSpan.FromMinutes(5));
+
+        if (!acquired)
+        {
+            return Conflict(
+                "A request with this Idempotency-Key is currently being processed.");
+        }
+
+        try
+        {
+            var employee = await _employeeService.CreateAsync(dto);
+
+            // Store the result for future retries
+            await _idempotencyService.StoreResultAsync(
+                idempotencyKey,
+                employee,
+                TimeSpan.FromMinutes(5));
+
+            return CreatedAtAction(
+                nameof(GetEmployee),
+                new { id = employee.Id },
+                employee);
+        }
+        catch
+        {
+            // Release the key so the client can safely retry
+            await _idempotencyService.ReleaseAsync(idempotencyKey);
+
+            throw;
+        }
 
     }
 

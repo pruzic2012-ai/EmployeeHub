@@ -1,10 +1,13 @@
-using EmployeeHub.Application.Data;
+using Asp.Versioning;
 using EmployeeHub.Api.Middleware;
-using EmployeeHub.Domain.Entities;
+using EmployeeHub.Application.Data;
 using EmployeeHub.Application.Repositories;
-using EmployeeHub.Infrastracture.Repositories;
 using EmployeeHub.Application.Services;
+using EmployeeHub.Application.Services.Caching;
+using EmployeeHub.Application.Services.Idempotency;
+using EmployeeHub.Domain.Entities;
 using EmployeeHub.Infrastracture.Caching;
+using EmployeeHub.Infrastracture.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -12,9 +15,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Scalar.AspNetCore;
 using Serilog;
+using StackExchange.Redis;
 using System.Text;
-using Asp.Versioning;
-using EmployeeHub.Application.Services.Caching;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -143,7 +145,13 @@ builder.Services.AddStackExchangeRedisCache(options =>
     options.Configuration = builder.Configuration["Redis:ConnectionString"];
 });
 
+builder.Services.AddSingleton<IConnectionMultiplexer>(
+    ConnectionMultiplexer.Connect(
+        builder.Configuration["Redis:ConnectionString"]!));
+
+
 builder.Services.AddScoped<ICacheService, RedisCacheService>();
+builder.Services.AddScoped<IIdempotencyService, RedisIdempotencyService>();
 
 builder.Services.Configure<ApiBehaviorOptions>(options =>
 {
