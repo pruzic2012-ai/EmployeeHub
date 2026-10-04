@@ -1,7 +1,8 @@
 import { Component, OnInit, signal, ChangeDetectorRef } from '@angular/core';
-import {CurrencyPipe} from "@angular/common";
+import { CurrencyPipe } from "@angular/common";
 import { EmployeeService } from '../service/employee.service';
 import { RouterLink } from '@angular/router';
+import { ErrorStateService } from '../service/error-state.service';
 
 @Component({
   imports: [CurrencyPipe, RouterLink],
@@ -15,13 +16,20 @@ export class Employees implements OnInit {
   employees: any[] = [];
   loading = signal(false);
   errorMessage = signal('');
+  
 
-  constructor(private employeeService: EmployeeService, private cdr: ChangeDetectorRef) {}
+  constructor(private employeeService: EmployeeService, 
+    private cdr: ChangeDetectorRef, 
+    private errorStateService: ErrorStateService) {}
 
   ngOnInit(): void {
 
     this.loading.set(true);
     this.errorMessage.set('');
+
+    this.errorStateService.errorMessage$.subscribe(message => {
+      this.errorMessage.set(message);
+    });
 
     this.employeeService.getEmployees().subscribe({
 
@@ -35,7 +43,6 @@ export class Employees implements OnInit {
       error: (error) => {
         console.error('Error loading employees:', error);
 
-        this.errorMessage.set('Unable to load employees.');
         this.loading.set(false);
       }
 

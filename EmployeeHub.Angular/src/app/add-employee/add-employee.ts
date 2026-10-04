@@ -1,7 +1,8 @@
 import { Component, signal } from '@angular/core';
-import {Router, RouterLink} from '@angular/router';
-import {FormsModule} from '@angular/forms';
+import { Router, RouterLink } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 import { EmployeeService } from '../service/employee.service';
+import { ErrorStateService } from '../service/error-state.service';
 
 @Component({
   imports: [FormsModule, RouterLink],
@@ -21,7 +22,13 @@ export class AddEmployee {
   successMessage = signal('');
   errorMessage = signal('');
 
-  constructor(private employeeService: EmployeeService, private router: Router) {}
+  constructor(private employeeService: EmployeeService, 
+    private router: Router,
+    private errorStateService: ErrorStateService) {
+      this.errorStateService.errorMessage$.subscribe(message => {
+      this.errorMessage.set(message);
+     });
+    }
 
   createEmployee(): void {
 
@@ -56,7 +63,6 @@ export class AddEmployee {
         },
         error: (error) => {
           console.error('Error creating employee:', error);
-          this.errorMessage.set('Error creating employee. Please try again.');
         }
       });
     } else {
