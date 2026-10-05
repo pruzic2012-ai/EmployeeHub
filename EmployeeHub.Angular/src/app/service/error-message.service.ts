@@ -10,6 +10,9 @@ export class ErrorMessageService {
 
     switch (error.status) {
 
+      case 400:
+        return 'The request is invalid. Please check your information and try again.';
+
       case 401:
         return 'Your session has expired. Please log in again.';
 

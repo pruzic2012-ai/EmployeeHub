@@ -1,5 +1,5 @@
 import { HttpErrorResponse, HttpInterceptorFn } from '@angular/common/http';
-import { catchError, throwError } from 'rxjs';
+import { catchError, tap, throwError } from 'rxjs';
 import { Router } from '@angular/router';
 import { inject } from '@angular/core';
 import { ErrorMessageService } from '../service/error-message.service';
@@ -11,22 +11,26 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
   const errorMessageService = inject(ErrorMessageService);
   const errorStateService = inject(ErrorStateService);
 
-  return next(req).pipe(
-    catchError((error: HttpErrorResponse) => {
+    return next(req).pipe( 
+      tap(() => {
+        errorStateService.clearError();
+      }),
 
-      const message = errorMessageService.getMessage(error);
-      errorStateService.setError(message);
+      catchError((error: HttpErrorResponse) => {
 
-      if (error.status === 401) {
-        localStorage.removeItem('token');
-        router.navigate(['/login']);
-      }
+        const message = errorMessageService.getMessage(error);
+        errorStateService.setError(message);
 
-      console.error(message);
-      console.error('HTTP Error:', error);
+        if (error.status === 401) {
+          localStorage.removeItem('token');
+          router.navigate(['/login']);
+        }
 
-      return throwError(() => error);
-    })
-  );
+        console.error(message);
+        console.error('HTTP Error:', error);
+
+        return throwError(() => error);
+      })
+   );
     
 };

@@ -2,6 +2,7 @@ import { Component, OnInit, ChangeDetectorRef, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink, ActivatedRoute } from '@angular/router';
 import { EmployeeService } from '../service/employee.service';
+import { ErrorStateService } from '../service/error-state.service';
 
 @Component({
   selector: 'app-edit-employee',
@@ -25,9 +26,15 @@ export class EditEmployee implements OnInit {
   constructor(private route: ActivatedRoute, 
               private employeeService: EmployeeService,
               private cdr: ChangeDetectorRef,
-              private router: Router) {}
+              private router: Router, 
+              private errorStateService: ErrorStateService) {}
 
   ngOnInit(): void {
+    
+    this.errorStateService.errorMessage$.subscribe((message) => {
+      this.errorMessage.set(message);
+    });
+
     const id = this.route.snapshot.paramMap.get('id');
 
      this.employeeId = Number(id);
@@ -91,7 +98,6 @@ export class EditEmployee implements OnInit {
     },
     error: (error) => {
       console.error('Error updating employee:', error);
-      this.errorMessage.set('Failed to update employee. Please try again.');
     }
   });
 }
