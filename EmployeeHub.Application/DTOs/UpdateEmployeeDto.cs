@@ -23,4 +23,6 @@ public class UpdateEmployeeDto
 
     [Range(30000, 1000000)]
     public decimal Salary { get; set; }
+
+    public byte[] RowVersion { get; set; } = Array.Empty<byte>();
 }

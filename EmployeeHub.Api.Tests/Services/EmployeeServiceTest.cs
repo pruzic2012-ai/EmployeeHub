@@ -1,8 +1,9 @@
 ﻿using EmployeeHub.Application.DTOs;
-using EmployeeHub.Domain.Entities;
+using EmployeeHub.Application.Exceptions;
 using EmployeeHub.Application.Repositories;
 using EmployeeHub.Application.Services;
 using EmployeeHub.Application.Services.Caching;
+using EmployeeHub.Domain.Entities;
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestPlatform.CommunicationUtilities;
 using Moq;
@@ -171,7 +172,7 @@ public class EmployeeServiceTests
     }
 
     [Fact]
-    public async Task UpdateAsync_WhenEmployeeDoesNotExist_ReturnsFalse()
+    public async Task UpdateAsync_WhenEmployeeDoesNotExist_ReturnsNotFound()
     {
         // Arrange
         var repositoryMock = new Mock<IEmployeeRepository>();
@@ -200,7 +201,7 @@ public class EmployeeServiceTests
         var result = await service.UpdateAsync(999, dto);
 
         // Assert
-        Assert.False(result);
+        Assert.Equal(UpdateEmployeeResult.NotFound, result);
 
         repositoryMock.Verify(
             r => r.UpdateEmployeeAsync(It.IsAny<Employee>()),
@@ -252,7 +253,7 @@ public class EmployeeServiceTests
         var result = await service.UpdateAsync(1, dto);
 
         // Assert
-        Assert.True(result);
+        Assert.Equal(UpdateEmployeeResult.Updated, result);
 
         Assert.Equal("John Updated", employee.FirstName);
         Assert.Equal("john.updated@example.com", employee.Email);
@@ -266,6 +267,62 @@ public class EmployeeServiceTests
         cacheMock.Verify(
             c => c.RemoveAsync("employees:all"),
             Times.Once);
+    }
+
+    [Fact]
+    public async Task UpdateAsync_WhenConcurrencyConflictOccurs_ReturnsConcurrencyConflict()
+    {
+        // Arrange
+        var employee = new Employee
+        {
+            Id = 1,
+            FirstName = "John",
+            LastName = "Smith",
+            Email = "john@example.com",
+            Department = "IT",
+            Salary = 70000,
+            CreatedDate = DateTime.UtcNow
+        };
+
+        var repositoryMock = new Mock<IEmployeeRepository>();
+        var loggerMock = new Mock<ILogger<EmployeeService>>();
+        var cacheMock = new Mock<ICacheService>();
+
+        repositoryMock
+            .Setup(r => r.GetEmployeeByIdAsync(1))
+            .ReturnsAsync(employee);
+
+        repositoryMock
+            .Setup(r => r.UpdateEmployeeAsync(employee))
+            .ThrowsAsync(
+                new ConcurrencyException(
+                    "Employee was modified by another user."));
+
+        var service = new EmployeeService(
+            repositoryMock.Object,
+            loggerMock.Object,
+            cacheMock.Object);
+
+        var dto = new UpdateEmployeeDto
+        {
+            FirstName = "John Updated",
+            LastName = "Smith",
+            Email = "john.updated@example.com",
+            Department = "Management",
+            Salary = 85000
+        };
+
+        // Act
+        var result = await service.UpdateAsync(1, dto);
+
+        // Assert
+        Assert.Equal(
+            UpdateEmployeeResult.ConcurrencyConflict,
+            result);
+
+        cacheMock.Verify(
+            c => c.RemoveAsync("employees:all"),
+            Times.Never);
     }
 
     [Fact]

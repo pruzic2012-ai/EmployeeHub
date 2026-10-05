@@ -11,7 +11,7 @@ public interface IEmployeeService
 
     Task<EmployeeDto> CreateAsync(CreateEmployeeDto dto);
 
-    Task<bool> UpdateAsync(int id, UpdateEmployeeDto dto);
+    Task<UpdateEmployeeResult> UpdateAsync(int id, UpdateEmployeeDto dto);
 
     Task<bool> DeleteAsync(int id);
 }

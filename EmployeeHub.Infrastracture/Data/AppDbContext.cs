@@ -18,6 +18,12 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<Employee>()
             .Property(e => e.Salary)
             .HasPrecision(18, 2);
+
+        modelBuilder.Entity<Employee>()
+        .Property(e => e.RowVersion)
+        .IsRowVersion()
+        .IsConcurrencyToken();
+        
     }
 
     public DbSet<Employee> Employees => Set<Employee>();

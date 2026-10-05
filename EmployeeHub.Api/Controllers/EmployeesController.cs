@@ -113,12 +113,16 @@ public class EmployeesController : ControllerBase
         int id,
         UpdateEmployeeDto dto)
     {
-        var updated = await _employeeService.UpdateAsync(id, dto);
+        var result = await _employeeService.UpdateAsync(id, dto);
+ 
+        return result switch
+        {
+            UpdateEmployeeResult.Updated => NoContent(),
+            UpdateEmployeeResult.NotFound => NotFound(),
+            UpdateEmployeeResult.ConcurrencyConflict => Conflict("The employee record has been modified by another user. Please refresh and try again."),
+            _ => StatusCode(500, "An unexpected error occurred.")
+        };
 
-        if (!updated)
-            return NotFound();
-
-        return NoContent();
     }
 
     [HttpDelete("{id:int}")]

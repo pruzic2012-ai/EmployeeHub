@@ -82,6 +82,10 @@ public class EmployeeApiTests
             "X-Test-Role",
             "Admin");
 
+        client.DefaultRequestHeaders.Add(
+            "Idempotency-Key",
+            Guid.NewGuid().ToString());
+
         var employee = new
         {
             firstName = "Integration",

@@ -5,6 +5,7 @@ using EmployeeHub.Domain.Entities;
 using EmployeeHub.Application.Repositories;
 using EmployeeHub.Application.Services.Caching;
 using Microsoft.Extensions.Logging;
+using EmployeeHub.Application.Exceptions;
 
 //using Microsoft.Extensions.Caching.Distributed;
 //using System.Text.Json;
@@ -129,7 +130,7 @@ public class EmployeeService : IEmployeeService
         };
     }
 
-    public async Task<bool> UpdateAsync(int id, UpdateEmployeeDto employee)
+    public async Task<UpdateEmployeeResult> UpdateAsync(int id, UpdateEmployeeDto employee)
     {
         _logger.LogInformation("Updating employee with ID {EmployeeId}", id);
 
@@ -138,8 +139,10 @@ public class EmployeeService : IEmployeeService
         {
             _logger.LogWarning("Employee with ID {EmployeeId} not found", id);
 
-            return false;
+            return UpdateEmployeeResult.NotFound;
         }
+
+        existingEmployee.RowVersion = employee.RowVersion;
 
         // Update the employee properties
         existingEmployee.FirstName = employee.FirstName;
@@ -148,12 +151,23 @@ public class EmployeeService : IEmployeeService
         existingEmployee.Department = employee.Department;
         existingEmployee.Salary = employee.Salary;
 
-        await _repository.UpdateEmployeeAsync(existingEmployee);
+        try
+        {
+            await _repository.UpdateEmployeeAsync(existingEmployee);
+        }
+        catch (ConcurrencyException)
+        {
+            _logger.LogWarning(
+                "Concurrency conflict while updating employee with ID {EmployeeId}",
+                id);
+
+            return UpdateEmployeeResult.ConcurrencyConflict;
+        }
 
         await _cache.RemoveAsync(EmployeesCacheKey);
         _logger.LogInformation("Employee list cache invalidated after updating employee {EmployeeId}", id);
 
-        return true;
+        return UpdateEmployeeResult.Updated;
     }
 
     public async Task<bool> DeleteAsync(int id)

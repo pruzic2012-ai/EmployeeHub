@@ -5,7 +5,7 @@ using EmployeeHub.Application.Repositories;
 using EmployeeHub.Application.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Client;
-
+using EmployeeHub.Application.Exceptions;
 
 namespace EmployeeHub.Infrastracture.Repositories;
 
@@ -47,7 +47,19 @@ public class EmployeeRepository : IEmployeeRepository
     public async Task UpdateEmployeeAsync(Employee employee)
     {
         _context.Employees.Update(employee);
-        await _context.SaveChangesAsync();
-        
+
+        _context.Entry(employee)
+            .Property(e => e.RowVersion)
+            .OriginalValue = employee.RowVersion;
+
+        try
+        {
+            await _context.SaveChangesAsync();
+        }
+        catch (DbUpdateConcurrencyException)
+        {
+            throw new ConcurrencyException(
+                $"Employee with ID {employee.Id} was modified by another user.");
+        }
     }
 }
