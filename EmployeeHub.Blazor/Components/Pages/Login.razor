@@ -1,0 +1,37 @@
+﻿@page "/login"
+@inherits LoginBase
+
+<PageTitle>Login</PageTitle>
+
+<h1>Login</h1>
+
+<div class="row">
+    <div class="col-md-4">
+
+        <div class="mb-3">
+            <label class="form-label">Username</label>
+            <input class="form-control"
+                   @bind="Username" />
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Password</label>
+            <input type="password"
+                   class="form-control"
+                   @bind="Password" />
+        </div>
+
+        <button class="btn btn-primary"
+                @onclick="LoginAsync">
+            Login
+        </button>
+
+        @if (!string.IsNullOrEmpty(ErrorMessage))
+        {
+            <div class="alert alert-danger mt-3">
+                @ErrorMessage
+            </div>
+        }
+
+    </div>
+</div>

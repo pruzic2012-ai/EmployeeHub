@@ -2,6 +2,7 @@
   <Project Path="EmployeeHub.Api.Tests/EmployeeHub.Api.Tests.csproj" Id="c0a46159-94af-42ee-bb56-d57afa16ef50" />
   <Project Path="EmployeeHub.Api/EmployeeHub.Api.csproj" />
   <Project Path="EmployeeHub.Application/EmployeeHub.Application.csproj" Id="910dad97-d593-4bab-b9c3-c9214423edc9" />
+  <Project Path="EmployeeHub.Blazor/EmployeeHub.Blazor.csproj" Id="a8bf40f8-a9ea-407e-b7eb-249057fbef00" />
   <Project Path="EmployeeHub.Domain/EmployeeHub.Domain.csproj" Id="6c4073b0-cbe1-4b6d-990a-a5b6b2eebc0a" />
   <Project Path="EmployeeHub.Infrastracture/EmployeeHub.Infrastracture.csproj" Id="34be2a98-96aa-4c99-874d-8d61cde2a465" />
   <Project Path="EmployeeHub.PasswordGenerator/EmployeeHub.PasswordGenerator.csproj" Id="cd9cd144-4961-4144-b223-f2ff6ef99f38" />
