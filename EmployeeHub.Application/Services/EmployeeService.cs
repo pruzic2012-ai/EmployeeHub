@@ -57,7 +57,8 @@ public class EmployeeService : IEmployeeService
             Email = e.Email,
             Department = e.Department,
             Salary = e.Salary,
-            CreatedDate = e.CreatedDate
+            CreatedDate = e.CreatedDate,
+            RowVersion = e.RowVersion
         }).ToList();
 
         await _cache.SetAsync(
@@ -88,7 +89,8 @@ public class EmployeeService : IEmployeeService
             Email = employee.Email,
             Department = employee.Department,
             Salary = employee.Salary,
-            CreatedDate = employee.CreatedDate
+            CreatedDate = employee.CreatedDate,
+            RowVersion = employee.RowVersion
         };
         
     }
@@ -126,7 +128,8 @@ public class EmployeeService : IEmployeeService
             Email = createdEmployee.Email,
             Department = createdEmployee.Department,
             Salary = createdEmployee.Salary,
-            CreatedDate = createdEmployee.CreatedDate
+            CreatedDate = createdEmployee.CreatedDate,
+            RowVersion = createdEmployee.RowVersion
         };
     }
 
