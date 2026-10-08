@@ -11,8 +11,15 @@ public class HomeBase : ComponentBase
 
     protected List<EmployeeModel> Employees { get; set; } = new();
 
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
+        if (!firstRender)
+        {
+            return;
+        }
+
         Employees = await EmployeeApi.GetEmployeesAsync();
+
+        await InvokeAsync(StateHasChanged);
     }
 }

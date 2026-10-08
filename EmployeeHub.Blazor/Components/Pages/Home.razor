@@ -1,12 +1,96 @@
-﻿@page "/"
+﻿@page "/home"
 @inherits HomeBase
+@rendermode InteractiveServer
 
+<PageTitle>Employees - EmployeeHub</PageTitle>
 
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h2 class="fw-bold mb-1">Employees</h2>
+        <p class="text-muted mb-0">
+            Manage your organization's employees
+        </p>
+    </div>
 
-<PageTitle>EmployeeHub</PageTitle>
+    <button class="btn btn-primary">
+        <span class="me-1">+</span>
+        Add Employee
+    </button>
+</div>
 
-<h1>EmployeeHub</h1>
+<div class="card shadow-sm">
+    <div class="card-body p-0">
 
-<p>Testing connection to EmployeeHub API...</p>
+        @if (Employees.Count == 0)
+        {
+            <div class="p-4 text-center text-muted">
+                No employees found.
+            </div>
+        }
+        else
+        {
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
 
-<p>Employees loaded: @Employees.Count</p>
+                    <thead class="table-light">
+                        <tr>
+                            <th class="ps-4">ID</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Department</th>
+                            <th>Salary</th>
+                            <th class="text-end pe-4">Actions</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @foreach (var employee in Employees)
+                        {
+                            <tr>
+                                <td class="ps-4 text-muted">
+                                    @employee.Id
+                                </td>
+
+                                <td>
+                                    <div class="fw-semibold">
+                                        @employee.FirstName @employee.LastName
+                                    </div>
+                                </td>
+
+                                <td>
+                                    @employee.Email
+                                </td>
+
+                                <td>
+                                    <span class="badge bg-secondary">
+                                        @employee.Department
+                                    </span>
+                                </td>
+
+                                <td class="fw-semibold">
+                                    @employee.Salary.ToString("C")
+                                </td>
+
+                                <td class="text-end pe-4">
+                                    <button class="btn btn-sm btn-outline-primary me-2">
+                                        Edit
+                                    </button>
+
+                                    <button class="btn btn-sm btn-outline-danger">
+                                        Delete
+                                    </button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+
+                </table>
+            </div>
+        }
+
+    </div>
+</div>
+
+<div class="mt-3 text-muted small">
+    Showing @Employees.Count employee(s)
+</div>

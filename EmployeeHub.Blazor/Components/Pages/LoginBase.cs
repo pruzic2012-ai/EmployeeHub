@@ -8,6 +8,12 @@ public class LoginBase : ComponentBase
     [Inject]
     protected AuthApiService AuthApi { get; set; } = default!;
 
+    [Inject]
+    protected ITokenService TokenService { get; set; } = default!;
+
+    [Inject]
+    protected NavigationManager Navigation { get; set; } = default!;
+
     protected string Username { get; set; } = string.Empty;
     protected string Password { get; set; } = string.Empty;
     protected string ErrorMessage { get; set; } = string.Empty;
@@ -27,5 +33,8 @@ public class LoginBase : ComponentBase
         }
 
         // We'll handle the JWT token in the next step.
+        TokenService.Token = response.Token;
+
+        Navigation.NavigateTo("/home");
     }
 }
