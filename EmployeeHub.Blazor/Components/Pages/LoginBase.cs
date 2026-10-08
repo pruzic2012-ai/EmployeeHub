@@ -17,24 +17,33 @@ public class LoginBase : ComponentBase
     protected string Username { get; set; } = string.Empty;
     protected string Password { get; set; } = string.Empty;
     protected string ErrorMessage { get; set; } = string.Empty;
+    public bool IsLoggingIn { get; set; }
 
     protected async Task LoginAsync()
     {
         ErrorMessage = string.Empty;
+        IsLoggingIn = true;
 
-        var response = await AuthApi.LoginAsync(
-            Username,
-            Password);
-
-        if (response is null)
+        try
         {
-            ErrorMessage = "Invalid username or password.";
-            return;
+            var response = await AuthApi.LoginAsync(
+                Username,
+                Password);
+
+            if (response is null)
+            {
+                ErrorMessage = "Invalid username or password.";
+                return;
+            }
+
+            // We'll handle the JWT token in the next step.
+            await TokenService.SetTokenAsync(response.Token);
+
+            Navigation.NavigateTo("/home");
         }
-
-        // We'll handle the JWT token in the next step.
-        TokenService.Token = response.Token;
-
-        Navigation.NavigateTo("/home");
+        finally
+        {
+            IsLoggingIn = false;
+        }
     }
 }

@@ -36,8 +36,21 @@
 
                     <div class="d-grid">
                         <button class="btn btn-primary"
-                                @onclick="LoginAsync">
-                            Login
+                                @onclick="LoginAsync"
+                                disabled="@IsLoggingIn">
+
+                            @if (IsLoggingIn)
+                            {
+                                <span class="spinner-border spinner-border-sm me-2"
+                                      role="status"
+                                      aria-hidden="true"></span>
+                                <span>Signing in...</span>
+                            }
+                            else
+                            {
+                                <span>Login</span>
+                            }
+
                         </button>
                     </div>
 

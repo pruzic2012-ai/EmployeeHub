@@ -1,0 +1,93 @@
+﻿@page "/edit-employee/{Id:int}"
+@inherits EditEmployeeBase
+@rendermode InteractiveServer
+
+
+<PageTitle>Edit Employee - EmployeeHub</PageTitle>
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h2 class="fw-bold mb-1">Edit Employee</h2>
+        <p class="text-muted mb-0">
+            Update employee information
+        </p>
+    </div>
+</div>
+
+@if (Employee is null)
+{
+    @if (!string.IsNullOrEmpty(ErrorMessage))
+    {
+        <div class="alert alert-danger">
+            @ErrorMessage
+        </div>
+    }
+    else
+    {
+        <div class="text-muted">
+            Loading employee...
+        </div>
+    }
+}
+else
+{
+    <div class="card shadow-sm">
+        <div class="card-body p-4">
+
+            <EditForm Model="Employee" 
+                OnValidSubmit="SaveAsync">
+
+                <div class="row">
+
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">First Name</label>
+                        <InputText class="form-control"
+                                   @bind-Value="Employee.FirstName" />
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Last Name</label>
+                        <InputText class="form-control"
+                                   @bind-Value="Employee.LastName" />
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Email</label>
+                        <InputText class="form-control"
+                                   @bind-Value="Employee.Email" />
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Department</label>
+                        <InputText class="form-control"
+                                   @bind-Value="Employee.Department" />
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Salary</label>
+                        <InputNumber class="form-control"
+                                     @bind-Value="Employee.Salary" />
+                    </div>
+
+                </div>
+
+                <div class="mt-3">
+
+                    <button type="submit"
+                            class="btn btn-primary me-2">
+                        Save Changes
+                    </button>
+
+                    <button type="button"
+                            class="btn btn-outline-secondary"
+                            @onclick="Cancel">
+                        Cancel
+                    </button>
+
+                </div>
+
+            </EditForm>
+
+        </div>
+    </div>
+}

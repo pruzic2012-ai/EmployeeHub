@@ -3,5 +3,9 @@ namespace EmployeeHub.Blazor.Services;
 
 public interface ITokenService
 {
-    string? Token { get; set; }
+    Task<string?> GetTokenAsync();
+
+    Task SetTokenAsync(string token);
+
+    Task ClearTokenAsync();
 }

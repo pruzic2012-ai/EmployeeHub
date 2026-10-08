@@ -12,10 +12,11 @@
         </p>
     </div>
 
-    <button class="btn btn-primary">
+    <a class="btn btn-primary"
+       href="/add-employee">
         <span class="me-1">+</span>
         Add Employee
-    </button>
+    </a>
 </div>
 
 <div class="card shadow-sm">
@@ -72,11 +73,13 @@
                                 </td>
 
                                 <td class="text-end pe-4">
-                                    <button class="btn btn-sm btn-outline-primary me-2">
+                                    <a class="btn btn-sm btn-outline-primary me-2"
+                                       href="@($"/edit-employee/{employee.Id}")">
                                         Edit
-                                    </button>
+                                    </a>
 
-                                    <button class="btn btn-sm btn-outline-danger">
+                                    <button class="btn btn-sm btn-outline-danger"
+                                            @onclick="() => ConfirmDeleteAsync(employee.Id)" ">
                                         Delete
                                     </button>
                                 </td>

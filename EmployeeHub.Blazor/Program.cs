@@ -7,8 +7,6 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
-builder.Services.AddTransient<JwtAuthorizationHandler>();
-
 builder.Services.AddHttpClient("EmployeeHubApi", client =>
     {
         client.BaseAddress = new Uri(
@@ -16,7 +14,7 @@ builder.Services.AddHttpClient("EmployeeHubApi", client =>
     });
     
 
-builder.Services.AddScoped<EmployeeApiService>();
+builder.Services.AddScoped<EmployeeService>();
 
 builder.Services.AddScoped<AuthApiService>();
 

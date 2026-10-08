@@ -11,9 +11,9 @@ public class LogoutButtonBase : ComponentBase
     [Inject]
     protected NavigationManager Navigation { get; set; } = default!;
 
-    protected void Logout()
+    protected async Task Logout()
     {
-        TokenService.Token = null;
+       await  TokenService.ClearTokenAsync();
 
         Navigation.NavigateTo("/");
     }
