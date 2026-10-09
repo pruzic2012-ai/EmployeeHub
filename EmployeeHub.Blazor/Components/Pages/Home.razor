@@ -18,7 +18,12 @@
         Add Employee
     </a>
 </div>
-
+@if (!string.IsNullOrWhiteSpace(ErrorMessage))
+{
+    <div class="alert alert-danger" role="alert">
+        @ErrorMessage
+    </div>
+}
 <div class="card shadow-sm">
     <div class="card-body p-0">
 
@@ -78,10 +83,25 @@
                                         Edit
                                     </a>
 
+                                    
                                     <button class="btn btn-sm btn-outline-danger"
-                                            @onclick="() => ConfirmDeleteAsync(employee.Id)" ">
-                                        Delete
+                                            @onclick="() => ConfirmDeleteAsync(employee.Id)"
+                                            disabled="@DeletingEmployeeId.HasValue">
+
+                                        @if (DeletingEmployeeId == employee.Id)
+                                        {
+                                            <span class="spinner-border spinner-border-sm me-1"
+                                                  role="status"
+                                                  aria-hidden="true"></span>
+                                            <span>Deleting...</span>
+                                        }
+                                        else
+                                        {
+                                            <span>Delete</span>
+                                        }
+
                                     </button>
+
                                 </td>
                             </tr>
                         }

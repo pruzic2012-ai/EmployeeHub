@@ -1,7 +1,8 @@
-﻿using System.Net.Http.Json;
+﻿using System.Net;
 using EmployeeHub.Blazor.Models;
 using System.Net.Http.Headers;
 using Microsoft.AspNetCore.Components;
+
 
 namespace EmployeeHub.Blazor.Services;
 
@@ -40,8 +41,9 @@ public class EmployeeService
         return employees ?? new List<EmployeeModel>();
     }
 
-    public async Task<EmployeeModel?> CreateEmployeeAsync(
-    CreateEmployeeModel employee)
+
+    public async Task<CreateEmployeeResult> CreateEmployeeAsync(
+        CreateEmployeeModel employee)
     {
         var response = await SendAuthorizedAsync(
             HttpMethod.Post,
@@ -56,14 +58,32 @@ public class EmployeeService
 
         if (response is null)
         {
-            return null;
+            return CreateEmployeeResult.Unauthenticated;
         }
 
-        response.EnsureSuccessStatusCode();
+        if (response.StatusCode == HttpStatusCode.Forbidden)
+        {
+            return CreateEmployeeResult.Forbidden;
+        }
 
-        return await response.Content
-            .ReadFromJsonAsync<EmployeeModel>();
+        if (response.StatusCode == HttpStatusCode.BadRequest)
+        {
+            return CreateEmployeeResult.BadRequest;
+        }
+
+        if (response.StatusCode == HttpStatusCode.Conflict)
+        {
+            return CreateEmployeeResult.Conflict;
+        }
+
+        if (!response.IsSuccessStatusCode)
+        {
+            return CreateEmployeeResult.Failed;
+        }
+
+        return CreateEmployeeResult.Success;
     }
+
 
     public async Task<EmployeeModel?> GetEmployeeByIdAsync(int id)
     {
@@ -87,7 +107,7 @@ public class EmployeeService
             .ReadFromJsonAsync<EmployeeModel>();
     }
 
-    public async Task<bool> UpdateEmployeeAsync(int id, UpdateEmployeeModel employee)
+    public async Task<UpdateEmployeeResult> UpdateEmployeeAsync(int id, UpdateEmployeeModel employee)
     {
         var response = await SendAuthorizedAsync(
             HttpMethod.Put,
@@ -96,20 +116,31 @@ public class EmployeeService
 
         if (response is null)
         {
-            return false;
+            return UpdateEmployeeResult.Unauthenticated;
         }
 
         if (response.StatusCode == System.Net.HttpStatusCode.Conflict)
         {
-            return false;
+            return UpdateEmployeeResult.ConcurrencyConflict;
+        }
+
+        if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
+        {
+            return UpdateEmployeeResult.NotFound;
+        }
+
+        if (response.StatusCode == System.Net.HttpStatusCode.Forbidden)
+        {
+            return UpdateEmployeeResult.Forbidden;
         }
 
         response.EnsureSuccessStatusCode();
 
-        return true;
+        return UpdateEmployeeResult.Success;
     }
 
-    public async Task<bool> DeleteEmployeeAsync(int id)
+
+    public async Task<DeleteEmployeeResult> DeleteEmployeeAsync(int id)
     {
         var response = await SendAuthorizedAsync(
             HttpMethod.Delete,
@@ -117,18 +148,24 @@ public class EmployeeService
 
         if (response is null)
         {
-            return false;
+            return DeleteEmployeeResult.Unauthenticated;
         }
 
-        if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
+        if (response.StatusCode == HttpStatusCode.NotFound)
         {
-            return false;
+            return DeleteEmployeeResult.NotFound;
+        }
+
+        if (response.StatusCode == HttpStatusCode.Forbidden)
+        {
+            return DeleteEmployeeResult.Forbidden;
         }
 
         response.EnsureSuccessStatusCode();
 
-        return true;
+        return DeleteEmployeeResult.Success;
     }
+
 
     private async Task<HttpResponseMessage?> SendAuthorizedAsync(HttpMethod method,string url,
         HttpContent? content = null,Action<HttpRequestMessage>? configureRequest = null)

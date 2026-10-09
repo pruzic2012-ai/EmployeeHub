@@ -18,6 +18,7 @@ public class AddEmployeeBase : ComponentBase
 
     protected bool IsSaving { get; set; }
 
+
     protected async Task AddEmployeeAsync()
     {
         ErrorMessage = string.Empty;
@@ -25,26 +26,55 @@ public class AddEmployeeBase : ComponentBase
 
         try
         {
-            var createdEmployee =
-                await EmployeeApi.CreateEmployeeAsync(Employee);
+            var result = await EmployeeApi.CreateEmployeeAsync(Employee);
 
-            if (createdEmployee is null)
+            switch (result)
             {
-                return;
-            }
+                case CreateEmployeeResult.Success:
+                    Navigation.NavigateTo("/home");
+                    return;
 
-            Navigation.NavigateTo("/home");
+                case CreateEmployeeResult.Unauthenticated:
+                    Navigation.NavigateTo("/login", replace: true);
+                    return;
+
+                case CreateEmployeeResult.Forbidden:
+                    ErrorMessage =
+                        "You don't have permission to create employees.";
+                    break;
+
+                case CreateEmployeeResult.BadRequest:
+                    ErrorMessage =
+                        "The API rejected the employee data. Please check your entries.";
+                    break;
+
+                case CreateEmployeeResult.Conflict:
+                    ErrorMessage =
+                        "The request conflicts with existing data. Please review your entries and try again.";
+                    break;
+
+                default:
+                    ErrorMessage =
+                        "Unable to create the employee. Please try again.";
+                    break;
+            }
         }
         catch (HttpRequestException)
         {
             ErrorMessage =
-                "Unable to create the employee. Please try again.";
+                "Unable to connect to the API. Please check your connection and try again.";
+        }
+        catch (Exception)
+        {
+            ErrorMessage =
+                "An unexpected error occurred while creating the employee. Please try again.";
         }
         finally
         {
             IsSaving = false;
         }
     }
+
 
     protected void Cancel()
     {
