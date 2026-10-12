@@ -15,6 +15,7 @@ builder.Services.AddHttpClient("EmployeeHubApi", client =>
     
 
 builder.Services.AddScoped<EmployeeService>();
+builder.Services.AddScoped<DepartmentReportService>();
 
 builder.Services.AddScoped<AuthApiService>();
 

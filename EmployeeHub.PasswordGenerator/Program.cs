@@ -10,7 +10,7 @@ var user = new User
 
 var hasher = new PasswordHasher<User>();
 
-var password = "User123!";
+var password = "***REMOVED***";
 
 var hash = hasher.HashPassword(user, password);
 

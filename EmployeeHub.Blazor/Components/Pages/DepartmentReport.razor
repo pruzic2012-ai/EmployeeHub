@@ -1,0 +1,106 @@
+﻿@page "/department-report"
+@inherits DepartmentReportBase
+@rendermode InteractiveServer
+
+<PageTitle>Department Report</PageTitle>
+
+<div class="report-page">
+    <div class="report-header">
+        <div>
+            <h1>Department Report</h1>
+            <p>Generate an AI-powered analysis of EmployeeHub employee data.</p>
+        </div>
+    </div>
+
+    <section class="report-controls">
+        <label for="department">Select Department</label>
+
+        <select id="department"
+                @bind="SelectedDepartment"
+                disabled="@IsLoading">
+            <option value="IT">IT</option>
+            <option value="Finance">Finance</option>
+            <option value="Accounting">Accounting</option>
+        </select>
+
+        <button type="button"
+                @onclick="GenerateReportAsync"
+                disabled="@IsLoading">
+            @(IsLoading ? "Generating report..." : "Generate Report")
+        </button>
+    </section>
+
+    @if (IsLoading)
+    {
+        <div class="loading-message" role="status">
+            <span class="spinner"></span>
+            <span>Analyzing department data. This may take a few moments.</span>
+        </div>
+    }
+
+    @if (!string.IsNullOrWhiteSpace(ErrorMessage))
+    {
+        <div class="error-message" role="alert">
+            @ErrorMessage
+        </div>
+    }
+
+   
+    @if (Report is not null && !IsLoading)
+    {
+        <section class="report-dashboard">
+            <div class="report-dashboard-header">
+                <div>
+                    <h2>Department Analysis</h2>
+                    <p>AI-generated summary of employee compensation</p>
+                </div>
+                <span class="report-status">Report generated</span>
+            </div>
+
+            <div class="report-metrics">
+                <div class="metric-card">
+                    <div class="metric-label">Department</div>
+                    <div class="metric-value">@Report.Department</div>
+                </div>
+
+                <div class="metric-card">
+                    <div class="metric-label">Employees</div>
+                    <div class="metric-value">
+                        @(string.IsNullOrWhiteSpace(Report.EmployeeCount)
+                            ? "—" : Report.EmployeeCount)
+                    </div>
+                </div>
+
+                <div class="metric-card">
+                    <div class="metric-label">Total salary</div>
+                    <div class="metric-value">
+                        @(string.IsNullOrWhiteSpace(Report.TotalSalary)
+                            ? "—" : Report.TotalSalary)
+                    </div>
+                </div>
+
+                <div class="metric-card">
+                    <div class="metric-label">Average salary</div>
+                    <div class="metric-value">
+                        @(string.IsNullOrWhiteSpace(Report.AverageSalary)
+                            ? "—" : Report.AverageSalary)
+                    </div>
+                </div>
+            </div>
+
+            <div class="observation-panel">
+                <h3>
+                    <span class="observation-icon">i</span>
+                    Business Observation
+                </h3>
+                <p>@Report.Observation</p>
+            </div>
+
+            <div class="report-footer">
+                <span>EmployeeHub</span>
+                <span>AI-powered department insights</span>
+            </div>
+        </section>
+    }
+
+</div>

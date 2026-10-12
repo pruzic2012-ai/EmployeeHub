@@ -1,0 +1,15 @@
+[
+  {
+    "Name": "New Profile",
+    "Projects": [
+      {
+        "Path": "EmployeeHub.Api\\EmployeeHub.Api.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "EmployeeHub.Blazor\\EmployeeHub.Blazor.csproj",
+        "Action": "Start"
+      }
+    ]
+  }
+]
