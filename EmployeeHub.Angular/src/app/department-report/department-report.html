@@ -1,0 +1,107 @@
+
+
+<div class="report-page">
+  <div class="report-header">
+    <div>
+      <h1>Department Report</h1>
+      <p>Generate an AI-powered analysis of EmployeeHub employee data.</p>
+    </div>
+  </div>
+
+  <section class="report-controls">
+    <label for="department">Select Department</label>
+
+    <select
+      id="department"
+      name="department"
+      [(ngModel)]="department"
+      [disabled]="isLoading()">
+      <option value="IT">IT</option>
+      <option value="Finance">Finance</option>
+      <option value="Accounting">Accounting</option>
+    </select>
+
+    <button
+      type="button"
+      (click)="generateReport()"
+      [disabled]="isLoading()">
+      @if (isLoading()) {
+        Generating report...
+      } @else {
+        Generate Report
+      }
+    </button>
+  </section>
+
+  
+  @if (isLoading()) {
+    <div class="loading-message" role="status">
+      <span class="spinner"></span>
+      <span>Analyzing department data. This may take a few moments.</span>
+    </div>
+  }
+
+  @if (errorMessage()) {
+    <div class="error-message" role="alert">
+      {{ errorMessage() }}
+    </div>
+  }
+ 
+@if (reportHtml() && !isLoading()) {
+  <section class="report-result">
+    <div class="result-header">
+      <div>
+        <h2>Department Analysis</h2>
+        <p class="result-subtitle">
+          AI-generated summary of employee compensation
+        </p>
+      </div>
+      <span class="report-badge">Report generated</span>
+    </div>
+
+    <div class="metric-grid">
+      <article class="metric-card">
+        <span class="metric-label">Department</span>
+        <strong class="metric-value">
+          {{ getReportValue('Department') }}
+        </strong>
+      </article>
+
+      <article class="metric-card">
+        <span class="metric-label">Employees</span>
+        <strong class="metric-value">
+          {{ getReportValue('Employee count') }}
+        </strong>
+      </article>
+
+      <article class="metric-card">
+        <span class="metric-label">Total salary</span>
+        <strong class="metric-value">
+          {{ getReportValue('Total salary') }}
+        </strong>
+      </article>
+
+      <article class="metric-card">
+        <span class="metric-label">Average salary</span>
+        <strong class="metric-value">
+          {{ getReportValue('Average salary') }}
+        </strong>
+      </article>
+    </div>
+
+    <div class="observation-card">
+      <h3>
+        <span class="observation-icon">i</span>
+        Business Observation
+      </h3>
+      <p>{{ getObservation() }}</p>
+    </div>
+
+    <p class="report-footer">
+      <span>EmployeeHub</span>
+      <span>AI-powered department insights</span>
+    </p>
+  </section>
+}
+
+</div>
