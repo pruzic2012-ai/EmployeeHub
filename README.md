@@ -66,3 +66,36 @@ Detailed setup instructions, environment configuration, database initialization,
 
 EmployeeHub is a portfolio project demonstrating full-stack development, backend architecture, database integration, API security, frontend development, automated testing, and workflow automation.
 
+
+## Application Screenshots
+
+EmployeeHub includes two frontend implementations built on the same backend API: Angular and Blazor.
+
+### Angular Frontend
+
+**Employee Management**
+
+![EmployeeHub Angular employee list](docs/screenshots/angular-employees.png)
+
+**Login**
+
+![EmployeeHub Angular login](docs/screenshots/angular-login.png)
+
+**Add Employee**
+
+![EmployeeHub Angular add employee form](docs/screenshots/angular-add-employee.png)
+
+### Blazor Frontend
+
+**Employee Management**
+
+![EmployeeHub Blazor employee list](docs/screenshots/blazor-employees.png)
+
+**Login**
+
+![EmployeeHub Blazor login](docs/screenshots/blazor-login.png)
+
+**Add Employee**
+
+![EmployeeHub Blazor add employee form](docs/screenshots/blazor-add-employee.png)
+
