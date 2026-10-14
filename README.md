@@ -85,6 +85,10 @@ EmployeeHub includes two frontend implementations built on the same backend API:
 
 ![EmployeeHub Angular add employee form](docs/screenshots/angular-add-employee.png)
 
+**Edit Employee**
+
+![EmployeeHub Angular edit employee form](docs/screenshots/angular-edit-employee.png)
+
 ### Blazor Frontend
 
 **Employee Management**
@@ -98,4 +102,8 @@ EmployeeHub includes two frontend implementations built on the same backend API:
 **Add Employee**
 
 ![EmployeeHub Blazor add employee form](docs/screenshots/blazor-add-employee.png)
+
+**Edit Employee**
+
+![EmployeeHub Blazor edit employee form](docs/screenshots/blazor-edit-employee.png)
 
