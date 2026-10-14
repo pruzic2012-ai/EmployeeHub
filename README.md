@@ -19,7 +19,7 @@ The project includes a secured REST API, two frontend implementations, automated
 
 - ## Architecture
 
-![EmployeeHub Architecture](docs/architecture/employeehub-architecture.png)
+![EmployeeHub Architecture](docs/screenshots/employeehub-architecture.png)
 
 ## Key Features
 
