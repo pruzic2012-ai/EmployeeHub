@@ -89,6 +89,10 @@ EmployeeHub includes two frontend implementations built on the same backend API:
 
 ![EmployeeHub Angular edit employee form](docs/screenshots/angular-edit-employee.png)
 
+**Delete Employee — Confirmation**
+
+![EmployeeHub Angular delete confirmation](docs/screenshots/angular-delete-confirmation.png)
+
 ### Blazor Frontend
 
 **Employee Management**
