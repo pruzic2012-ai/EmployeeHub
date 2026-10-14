@@ -17,9 +17,6 @@ The project includes a secured REST API, two frontend implementations, automated
 - **Testing:** xUnit, Moq, automated unit and integration tests
 - **Automation:** n8n
 
-- ## Architecture
-
-![EmployeeHub Architecture](docs/screenshots/employeehub-architecture.png)
 
 ## Key Features
 
@@ -47,6 +44,8 @@ EmployeeHub separates business logic, application services, and infrastructure c
 - **EmployeeHub.Api.Tests:** Automated tests
 - **EmployeeHub.Angular:** Angular frontend
 - **EmployeeHub.Blazor:** Blazor frontend
+
+![EmployeeHub Architecture](docs/screenshots/employeehub-architecture.png)
 
 ## Security
 
