@@ -77,23 +77,74 @@ dotnet test
 
 ### Prerequisites
 
-Install and configure the following tools:
+Install the following tools:
 
-- **.NET 10 SDK** — for the API, Blazor application, and automated tests.
-- **SQL Server** — for employee and user data.
-- **Redis** — for distributed caching and idempotency.
-- **Node.js and npm** — for the Angular frontend.
-- **Angular CLI** — if required by the frontend's startup workflow.
+- **.NET 10 SDK**
+- **SQL Server**
+- **Redis**
+- **Node.js and npm** for the Angular frontend
+- **Visual Studio** or another compatible .NET development environment
 
 ### Configuration
 
-The API uses ASP.NET Core configuration to load connection settings.
+Before starting the application, configure the required settings:
 
-- **SQL Server:** The database connection string is stored in ASP.NET Core User Secrets and is not committed to the repository.
-- **Redis:** The connection string is read from the `Redis:ConnectionString` configuration key.
-- **JWT authentication:** Configure the signing key securely according to the API's configuration requirements. Do not commit production secrets or credentials to source control.
+- **SQL Server:** Store the database connection string in ASP.NET Core User Secrets.
+- **Redis:** Configure the `Redis:ConnectionString` setting.
+- **JWT authentication:** Store the JWT signing key and related settings in User Secrets for local development.
+- **n8n integration:** Configure the required webhook URL and authentication header settings if running the department report workflow.
 
-Before starting the API, configure the required database, Redis, and JWT settings for your local environment.
+Do not commit real credentials, signing keys, or other sensitive configuration values to source control.
+
+### Start Redis
+
+EmployeeHub uses Redis for distributed caching and idempotent employee creation. Ensure Docker Desktop is running, then start the Redis container:
+
+```powershell
+docker start employeehub-redis
+```
+
+If the `employeehub-redis` container has already been created, this command starts it. Verify that the container is running:
+
+```powershell
+docker ps
+```
+
+If the container does not exist yet, create it using the Redis configuration established for your local environment before proceeding.
+
+### Start the API
+
+From the solution directory, run:
+
+```powershell
+dotnet run --project EmployeeHub.Api
+```
+
+The API launch profile is configured to use:
+
+`http://localhost:5239`
+
+Ensure that SQL Server and Redis are available and that the required configuration has been set before starting the API.
+
+### Run the Automated Tests
+
+From the solution directory, execute:
+
+```powershell
+dotnet test
+```
+
+The solution's verified test results are documented in the Testing section above.
+
+### Frontend Applications
+
+The repository includes two frontend implementations:
+
+- **Angular:** Requires Node.js and npm. Use the Angular project's package scripts to install dependencies and start the development server.
+- **Blazor:** Run the `EmployeeHub.Blazor` project using Visual Studio or the .NET CLI.
+
+Consult each project's configuration for its specific startup settings.
+
 
 ### Starting the Applications
 
