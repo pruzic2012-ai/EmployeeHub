@@ -19,6 +19,7 @@ export class EditEmployee implements OnInit {
   email = '';
   department = '';
   salary: number | null = null;
+  rowVersion = '';
 
   errorMessage = signal('');
   submitted = false;
@@ -49,6 +50,8 @@ export class EditEmployee implements OnInit {
           this.email = employee.email;
           this.department = employee.department;
           this.salary = employee.salary;
+          this.rowVersion = employee.rowVersion;
+          console.log('RowVersion loaded:', this.rowVersion);
           this.cdr.detectChanges(); // Trigger change detection after updating properties
           
         },
@@ -84,7 +87,8 @@ export class EditEmployee implements OnInit {
     lastName: this.lastName,
     email: this.email,
     department: this.department,
-    salary: this.salary
+    salary: this.salary,
+    rowVersion: this.rowVersion
   };
 
   this.employeeService.updateEmployee(
