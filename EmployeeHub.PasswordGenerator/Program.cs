@@ -10,7 +10,8 @@ var user = new User
 
 var hasher = new PasswordHasher<User>();
 
-var password = "***REMOVED***";
+Console.Write("Enter password to hash: ");
+var password = Console.ReadLine() ?? string.Empty;
 
 var hash = hasher.HashPassword(user, password);
 
