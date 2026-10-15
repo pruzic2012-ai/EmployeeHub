@@ -61,9 +61,30 @@ Test results and instructions for running the tests will be documented here afte
 
 ## Running the Project
 
-The application requires the appropriate .NET SDK, SQL Server, and Redis configuration. The Angular frontend also requires Node.js and npm.
+### Prerequisites
 
-Detailed setup instructions, environment configuration, database initialization, and frontend startup commands will be added after verifying the current project configuration.
+Install and configure the following tools:
+
+- **.NET 10 SDK** — for the API, Blazor application, and automated tests.
+- **SQL Server** — for employee and user data.
+- **Redis** — for distributed caching and idempotency.
+- **Node.js and npm** — for the Angular frontend.
+- **Angular CLI** — if required by the frontend's startup workflow.
+
+### Configuration
+
+The API uses ASP.NET Core configuration to load connection settings.
+
+- **SQL Server:** The database connection string is stored in ASP.NET Core User Secrets and is not committed to the repository.
+- **Redis:** The connection string is read from the `Redis:ConnectionString` configuration key.
+- **JWT authentication:** Configure the signing key securely according to the API's configuration requirements. Do not commit production secrets or credentials to source control.
+
+Before starting the API, configure the required database, Redis, and JWT settings for your local environment.
+
+### Starting the Applications
+
+Detailed commands for database initialization, starting the API, running the Angular frontend, and launching the Blazor application will be documented after verifying each project's configuration.
+
 
 ## Project Purpose
 
