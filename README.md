@@ -140,7 +140,7 @@ The solution's verified test results are documented in the Testing section above
 
 The repository includes two frontend implementations:
 
-- **Angular:** Requires Node.js and npm. Use the Angular project's package scripts to install dependencies and start the development server.
+- **Angular:** Requires Node.js and npm. Use the Angular project's package scripts to install dependencies and start the development server. 
 - **Blazor:** Run the `EmployeeHub.Blazor` project using Visual Studio or the .NET CLI.
 
 Consult each project's configuration for its specific startup settings.
@@ -149,6 +149,39 @@ Consult each project's configuration for its specific startup settings.
 ### Starting the Applications
 
 Detailed commands for database initialization, starting the API, running the Angular frontend, and launching the Blazor application will be documented after verifying each project's configuration.
+
+### Run the Angular Frontend
+
+The Angular frontend uses Angular 22, TypeScript, and Bootstrap.
+
+Open a terminal in the `EmployeeHub.Angular` directory:
+
+```powershell
+cd EmployeeHub.Angular
+```
+
+Install the dependencies:
+
+```powershell
+npm install
+```
+
+Start the development server:
+
+```powershell
+npm start
+```
+
+The Angular development server will display its local URL in the terminal, typically `http://localhost:4200`.
+
+To create a production build, run:
+
+```powershell
+npm run build
+```
+
+Ensure the EmployeeHub API is running and that the frontend's API configuration points to the correct API URL.
+
 
 
 ## Project Purpose
