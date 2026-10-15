@@ -69,6 +69,22 @@ Detailed setup instructions, environment configuration, database initialization,
 
 EmployeeHub is a portfolio project demonstrating full-stack development, backend architecture, database integration, API security, frontend development, automated testing, and workflow automation.
 
+## AI-Powered Department Report
+
+EmployeeHub integrates with an n8n workflow to generate an employee department report using data from the EmployeeHub API.
+
+The workflow demonstrates how application data can be retrieved through an API, processed by an automation workflow, and presented in a readable report with AI assistance.
+
+![EmployeeHub AI-generated department report](docs/screenshots/employee-department-report.png)
+
+**What this demonstrates:**
+- Integration between the EmployeeHub API and n8n.
+- Workflow automation for retrieving and processing employee data.
+- AI-assisted report generation and presentation.
+- Combining .NET application development with AI automation.
+
+
+
 
 ## Application Screenshots
 
