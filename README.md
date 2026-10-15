@@ -55,9 +55,23 @@ Sensitive configuration values must be supplied through local configuration or e
 
 ## Testing
 
-The project includes automated unit and integration tests covering important application and API behavior.
+EmployeeHub includes automated unit and integration tests using **xUnit** and **Moq**.
 
-Test results and instructions for running the tests will be documented here after the final repository verification.
+The solution was tested successfully using `dotnet test`.
+
+**Verified test results:**
+- **Total tests:** 13
+- **Passed:** 13
+- **Failed:** 0
+- **Skipped:** 0
+
+The tests cover important application and API behavior, including employee operations, authentication, authorization, and HTTP responses.
+
+To run the tests locally, open a terminal in the solution directory and execute:
+
+```powershell
+dotnet test
+```
 
 ## Running the Project
 
