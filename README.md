@@ -146,10 +146,6 @@ The repository includes two frontend implementations:
 Consult each project's configuration for its specific startup settings.
 
 
-### Starting the Applications
-
-Detailed commands for database initialization, starting the API, running the Angular frontend, and launching the Blazor application will be documented after verifying each project's configuration.
-
 ### Run the Angular Frontend
 
 The Angular frontend uses Angular 22, TypeScript, and Bootstrap.
@@ -182,6 +178,23 @@ npm run build
 
 Ensure the EmployeeHub API is running and that the frontend's API configuration points to the correct API URL.
 
+### Run the Blazor Frontend
+
+EmployeeHub includes a Blazor frontend that uses the same backend API as the Angular application.
+
+From the solution directory, run:
+
+```powershell
+dotnet run --project EmployeeHub.Blazor
+```
+
+The Blazor development server is configured to use:
+
+`http://localhost:5193`
+
+Ensure the EmployeeHub API is running and that the Blazor application's API configuration points to the correct API URL.
+
+The Angular and Blazor frontends provide alternative user interfaces for managing employees through the EmployeeHub API.
 
 
 ## Project Purpose
