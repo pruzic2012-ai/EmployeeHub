@@ -1,9 +1,9 @@
-﻿using System.Text.Json;
+using System.Text.Json;
 using Microsoft.Extensions.Caching.Distributed;
 using EmployeeHub.Application.Services.Caching;
 using StackExchange.Redis;
 
-namespace EmployeeHub.Infrastracture.Caching;
+namespace EmployeeHub.Infrastructure.Caching;
 
 public class RedisCacheService : ICacheService
 {
@@ -61,3 +61,4 @@ public class RedisCacheService : ICacheService
         await _cache.RemoveAsync(key);
     }
 }
+

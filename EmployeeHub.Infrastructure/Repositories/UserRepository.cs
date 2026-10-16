@@ -1,10 +1,10 @@
-﻿using EmployeeHub.Application.Data;
+using EmployeeHub.Application.Data;
 using EmployeeHub.Domain.Entities;
 using EmployeeHub.Application.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Client;
 
-namespace EmployeeHub.Infrastracture.Repositories
+namespace EmployeeHub.Infrastructure.Repositories
 {
     public class UserRepository : IUserRepository
     {
@@ -23,3 +23,4 @@ namespace EmployeeHub.Infrastracture.Repositories
         }
     }
 }
+

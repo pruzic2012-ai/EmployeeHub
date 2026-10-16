@@ -1,4 +1,4 @@
-﻿
+
 using EmployeeHub.Domain.Entities;
 using EmployeeHub.Application.Repositories;
 
@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Client;
 using EmployeeHub.Application.Exceptions;
 
-namespace EmployeeHub.Infrastracture.Repositories;
+namespace EmployeeHub.Infrastructure.Repositories;
 
 public class EmployeeRepository : IEmployeeRepository
 {
@@ -63,3 +63,4 @@ public class EmployeeRepository : IEmployeeRepository
         }
     }
 }
+

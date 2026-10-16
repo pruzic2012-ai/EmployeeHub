@@ -1,10 +1,10 @@
-﻿using EmployeeHub.Application.Services.Caching;
+using EmployeeHub.Application.Services.Caching;
 using EmployeeHub.Application.Services.Idempotency;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace EmployeeHub.Infrastracture.Caching;
+namespace EmployeeHub.Infrastructure.Caching;
 
 public class RedisIdempotencyService : IIdempotencyService
 {
@@ -38,3 +38,4 @@ public class RedisIdempotencyService : IIdempotencyService
         await _cache.RemoveAsync(LockPrefix + key);
     }
 }
+
