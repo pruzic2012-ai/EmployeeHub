@@ -5,5 +5,6 @@
   <Project Path="EmployeeHub.Blazor/EmployeeHub.Blazor.csproj" Id="a8bf40f8-a9ea-407e-b7eb-249057fbef00" />
   <Project Path="EmployeeHub.Domain/EmployeeHub.Domain.csproj" Id="6c4073b0-cbe1-4b6d-990a-a5b6b2eebc0a" />
   <Project Path="EmployeeHub.Infrastructure/EmployeeHub.Infrastructure.csproj" Id="34be2a98-96aa-4c99-874d-8d61cde2a465" />
+  <Project Path="EmployeeHub.Mvc/EmployeeHub.Mvc.csproj" />
   <Project Path="EmployeeHub.PasswordGenerator/EmployeeHub.PasswordGenerator.csproj" Id="cd9cd144-4961-4144-b223-f2ff6ef99f38" />
 </Solution>
