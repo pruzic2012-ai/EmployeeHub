@@ -1,0 +1,57 @@
+﻿@model IEnumerable<EmployeeHub.Mvc.Models.EmployeeViewModel>
+
+@{
+    ViewData["Title"] = "Employees";
+}
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h1>Employees</h1>
+    </div>
+
+    @if (ViewBag.ApiError != null)
+    {
+        <div class="alert alert-danger" role="alert">
+            @ViewBag.ApiError
+        </div>
+    }
+
+    @if (Model.Any())
+    {
+        <div class="table-responsive">
+            <table class="table table-striped table-hover align-middle">
+                <thead class="table-dark">
+                    <tr>
+                        <th>ID</th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Email</th>
+                        <th>Department</th>
+                        <th class="text-end">Salary</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var employee in Model)
+                    {
+                        <tr>
+                            <td>@employee.Id</td>
+                            <td>@employee.FirstName</td>
+                            <td>@employee.LastName</td>
+                            <td>@employee.Email</td>
+                            <td>@employee.Department</td>
+                            <td class="text-end">
+                                @employee.Salary.ToString("C")
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else if (ViewBag.ApiError == null)
+    {
+        <div class="alert alert-info">
+            No employees were returned by the API.
+        </div>
+    }
+</div>

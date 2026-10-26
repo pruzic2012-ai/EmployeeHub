@@ -13,8 +13,7 @@ public class EmployeeApiClient
         _httpClientFactory = httpClientFactory;
     }
 
-    public async Task<List<EmployeeViewModel>> GetEmployeesAsync(
-        string accessToken,
+    public async Task<List<EmployeeViewModel>> GetEmployeesAsync(string accessToken,
         CancellationToken cancellationToken = default)
     {
         using var client =
